@@ -1,380 +1,478 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RNG - Conserto Imediato de Celular, Notebook e PC | São Paulo</title>
-    <meta name="description" content="Assistência técnica especializada em São Paulo. Conserto no mesmo dia com garantia. WhatsApp (11) 96596-3534">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <!-- WhatsApp Floating Button -->
-    <div class="whatsapp-float" id="whatsapp-btn">
-        <i class="fab fa-whatsapp"></i>
-        <span class="pulse-ring"></span>
-    </div>
+// Variáveis globais para controle de urgência
+let spotsLeft = 7;
+let countdownActive = true;
 
-    <!-- Header Hero Section -->
-    <header class="hero-section">
-        <div class="hero-bg"></div>
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <div class="logo-icon">RNG</div>
-                    <span>Assistência Técnica</span>
-                </div>
-                <div class="nav-cta">
-                    <a href="#contact" class="cta-btn primary">ORÇAMENTO GRÁTIS</a>
-                </div>
-            </div>
-        </nav>
+// Função principal para abrir WhatsApp com mensagem personalizada
+function openWhatsApp(service = '') {
+    const phoneNumber = '5511965963534'; // Número do Felipe
+    
+    // Mensagens personalizadas por serviço
+    const messages = {
+        'smartphone': 'Olá! Vi a oferta no site e preciso consertar meu SMARTPHONE. Quero aproveitar o diagnóstico GRATUITO! 📱',
+        'tablet': 'Oi! Vim pelo site e preciso de ajuda com meu TABLET. Quero o diagnóstico gratuito! 📟',
+        'notebook': 'Olá! Vi a promoção e meu NOTEBOOK precisa de reparo. Posso aproveitar o diagnóstico GRATUITO? 💻',
+        'pc': 'Oi! Encontrei vocês no site e preciso consertar meu PC. Quero aproveitar a oferta! 🖥️',
+        'logo-click': 'Olá RNG! Cliquei na logo flutuante e quero saber mais sobre vocês! Preciso de assistência técnica especializada. Quando posso levar meu aparelho? 👑✨',
+        'default': 'Olá! Vi a oferta IMPERDÍVEL no site e quero aproveitar o DIAGNÓSTICO GRATUITO hoje mesmo! Quando posso levar meu aparelho? ⚡'
+    };
+    
+    const message = messages[service] || messages['default'];
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    // Analytics tracking (opcional)
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'whatsapp_click', {
+            'event_category': 'conversion',
+            'event_label': service || 'general',
+            'value': 1
+        });
+    }
+    
+    // Diminui o número de vagas disponíveis
+    updateSpotsLeft();
+    
+    // Abre WhatsApp
+    window.open(whatsappURL, '_blank');
+}
 
-        <div class="hero-content">
-            <div class="container">
-                <div class="hero-text">
-                    <div class="urgency-badge">
-                        <i class="fas fa-clock"></i>
-                        <span>APENAS HOJE: Diagnóstico Gratuito</span>
-                    </div>
-                    <h1>Seu Celular Quebrou?<br><span class="highlight">Consertamos em 30 Minutos!</span></h1>
-                    <p class="hero-subtitle">Assistência técnica especializada com <strong>mais de 1.000 clientes satisfeitos</strong> em São Paulo. Garantia real de 90 dias e peças originais.</p>
-                    
-                    <div class="hero-benefits">
-                        <div class="benefit-item">
-                            <i class="fas fa-bolt"></i>
-                            <span>Reparo Expresso</span>
-                        </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>90 Dias de Garantia</span>
-                        </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-medal"></i>
-                            <span>Peças Originais</span>
-                        </div>
-                    </div>
-
-                    <div class="hero-cta">
-                        <a href="#" class="cta-btn mega" onclick="openWhatsApp()">
-                            <i class="fab fa-whatsapp"></i>
-                            QUERO CONSERTAR AGORA
-                        </a>
-                        <div class="social-proof">
-                            <div class="stars">★★★★★</div>
-                            <span>4.9/5 - Mais de 200 avaliações</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="hero-image">
-                    <div class="phone-mockup">
-                        <div class="screen-glow"></div>
-                    </div>
-                    
-                    <!-- Logo Flutuante RNG -->
-                    <div class="floating-logo">
-                        <div class="logo-bubble" onclick="openWhatsApp('logo-click')">
-                            <!-- Logo RNG Recreada -->
-                            <div class="rng-logo">
-                                <!-- Coroa Superior Amarela -->
-                                <div class="crown-top">
-                                    <div class="crown-piece left"></div>
-                                    <div class="crown-piece center"></div>
-                                    <div class="crown-piece right"></div>
-                                </div>
-                                
-                                <!-- Apple Icon -->
-                                <div class="apple-icon">
-                                    <div class="apple-body"></div>
-                                    <div class="apple-leaf"></div>
-                                </div>
-                                
-                                <!-- Texto RNG -->
-                                <div class="rng-text">RNG</div>
-                                <div class="rng-subtext">Venda e Assistência</div>
-                                
-                                <!-- Coroa Inferior Azul -->
-                                <div class="crown-bottom">
-                                    <div class="crown-piece-bottom left"></div>
-                                    <div class="crown-piece-bottom right"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="logo-bubble-text">
-                                Especialistas
-                                <div class="logo-bubble-subtext">Clique e Converse!</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Trust Indicators -->
-    <section class="trust-section">
-        <div class="container">
-            <div class="trust-grid">
-                <div class="trust-item">
-                    <div class="trust-number">1000+</div>
-                    <div class="trust-label">Clientes Atendidos</div>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-number">30min</div>
-                    <div class="trust-label">Tempo Médio</div>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-number">90dias</div>
-                    <div class="trust-label">Garantia Total</div>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-number">4.9★</div>
-                    <div class="trust-label">Avaliação</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Problem Agitation -->
-    <section class="problem-section">
-        <div class="container">
-            <h2>Reconhece Essa Situação?</h2>
-            <div class="problems-grid">
-                <div class="problem-card">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h3>Tela Rachada</h3>
-                    <p>Seu celular caiu e a tela quebrou? <strong>Perdendo dados importantes</strong> porque não consegue usar?</p>
-                </div>
-                <div class="problem-card">
-                    <i class="fas fa-battery-empty"></i>
-                    <h3>Bateria Viciada</h3>
-                    <p>Carregador ligado 24h? <strong>Trabalho prejudicado</strong> porque o celular desliga do nada?</p>
-                </div>
-                <div class="problem-card">
-                    <i class="fas fa-water"></i>
-                    <h3>Caiu na Água</h3>
-                    <p>Molhou e não liga mais? <strong>Contatos e fotos perdidos</strong> para sempre?</p>
-                </div>
-                <div class="problem-card">
-                    <i class="fas fa-laptop"></i>
-                    <h3>PC/Notebook Lento</h3>
-                    <p>Computador travando? <strong>Perdendo prazos</strong> porque demora 10 minutos para ligar?</p>
-                </div>
-            </div>
-            <div class="problem-cta">
-                <p class="problem-conclusion"><strong>PARE DE SOFRER!</strong> Resolva isso HOJE mesmo</p>
-                <a href="#" class="cta-btn secondary" onclick="openWhatsApp()">QUERO RESOLVER AGORA</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Solution/Services -->
-    <section class="services-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Resolvemos <span class="highlight">Qualquer Problema</span></h2>
-                <p>Somos especialistas em dar vida nova para seus aparelhos</p>
-            </div>
+// Função para atualizar vagas restantes
+function updateSpotsLeft() {
+    if (spotsLeft > 1) {
+        spotsLeft--;
+        const spotsElement = document.getElementById('spots');
+        if (spotsElement) {
+            spotsElement.textContent = `${spotsLeft} vagas restantes`;
             
-            <div class="services-grid">
-                <div class="service-card featured">
-                    <div class="service-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Smartphones</h3>
-                    <ul class="service-list">
-                        <li>Troca de Tela (Original)</li>
-                        <li>Bateria Nova</li>
-                        <li>Reparo de Placa</li>
-                        <li>Desbloqueio</li>
-                        <li>Recuperação de Dados</li>
-                    </ul>
-                    <div class="service-price">A partir de R$ 89</div>
-                    <a href="#" class="service-cta" onclick="openWhatsApp('smartphone')">CONSERTAR CELULAR</a>
-                </div>
+            // Adiciona efeito visual quando a vaga diminui
+            spotsElement.style.animation = 'none';
+            setTimeout(() => {
+                spotsElement.style.animation = 'urgentBlink 1s ease-in-out 3';
+            }, 10);
+        }
+        
+        // Salva no localStorage para persistir entre sessões
+        try {
+            localStorage.setItem('rng_spots_left', spotsLeft.toString());
+        } catch (e) {
+            // Fallback se localStorage não estiver disponível
+            console.log('LocalStorage não disponível');
+        }
+    }
+}
 
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tablet-alt"></i>
-                    </div>
-                    <h3>Tablets</h3>
-                    <ul class="service-list">
-                        <li>Display Touch</li>
-                        <li>Carregamento</li>
-                        <li>Reset/Formatação</li>
-                        <li>Atualização Sistema</li>
-                    </ul>
-                    <div class="service-price">A partir de R$ 129</div>
-                    <a href="#" class="service-cta" onclick="openWhatsApp('tablet')">CONSERTAR TABLET</a>
-                </div>
+// Função do countdown timer
+function startCountdown() {
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    
+    if (!hoursEl || !minutesEl || !secondsEl) return;
+    
+    // Define o tempo inicial (ou recupera do localStorage)
+    let timeLeft;
+    try {
+        const saved = localStorage.getItem('rng_countdown');
+        timeLeft = saved ? parseInt(saved) : 24 * 60 * 60; // 24 horas em segundos
+    } catch (e) {
+        timeLeft = 24 * 60 * 60; // Fallback para 24 horas
+    }
+    
+    const timer = setInterval(() => {
+        if (timeLeft <= 0) {
+            // Reinicia o countdown para manter a urgência
+            timeLeft = 24 * 60 * 60;
+        }
+        
+        const hours = Math.floor(timeLeft / 3600);
+        const minutes = Math.floor((timeLeft % 3600) / 60);
+        const seconds = timeLeft % 60;
+        
+        hoursEl.textContent = hours.toString().padStart(2, '0');
+        minutesEl.textContent = minutes.toString().padStart(2, '0');
+        secondsEl.textContent = seconds.toString().padStart(2, '0');
+        
+        // Salva o estado atual
+        try {
+            localStorage.setItem('rng_countdown', timeLeft.toString());
+        } catch (e) {
+            // Continua funcionando mesmo sem localStorage
+        }
+        
+        timeLeft--;
+        
+        // Adiciona efeito de urgência quando o tempo está acabando
+        if (timeLeft < 3600) { // Menos de 1 hora
+            document.querySelector('.countdown').style.animation = 'urgentPulse 1s infinite';
+        }
+        
+    }, 1000);
+    
+    return timer;
+}
 
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3>Notebooks</h3>
-                    <ul class="service-list">
-                        <li>Limpeza Completa</li>
-                        <li>Troca de HD/SSD</li>
-                        <li>Memória RAM</li>
-                        <li>Tela/Teclado</li>
-                        <li>Fonte/Carregador</li>
-                    </ul>
-                    <div class="service-price">A partir de R$ 149</div>
-                    <a href="#" class="service-cta" onclick="openWhatsApp('notebook')">CONSERTAR NOTEBOOK</a>
-                </div>
+// Função para animações na rolagem
+function setupScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Seleciona elementos para animar
+    const animatedElements = document.querySelectorAll(
+        '.trust-item, .problem-card, .service-card, .testimonial-card'
+    );
+    
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s ease-out';
+        observer.observe(el);
+    });
+}
 
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-desktop"></i>
-                    </div>
-                    <h3>Computadores</h3>
-                    <ul class="service-list">
-                        <li>Montagem Completa</li>
-                        <li>Upgrade Hardware</li>
-                        <li>Instalação Windows</li>
-                        <li>Remoção Vírus</li>
-                        <li>Backup/Recovery</li>
-                    </ul>
-                    <div class="service-price">A partir de R$ 99</div>
-                    <a href="#" class="service-cta" onclick="openWhatsApp('pc')">CONSERTAR PC</a>
-                </div>
+// Função para smooth scroll nos links âncora
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Função para criar efeito parallax sutil
+function setupParallax() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        const heroBg = document.querySelector('.hero-bg');
+        if (heroBg) {
+            heroBg.style.transform = `translateY(${rate}px)`;
+        }
+        
+        const phoneModal = document.querySelector('.phone-mockup');
+        if (phoneModal) {
+            const parallaxRate = scrolled * 0.3;
+            phoneModal.style.transform = `perspective(1000px) rotateY(-15deg) translateY(${parallaxRate}px)`;
+        }
+    });
+}
+
+// Função para adicionar micro-interações nos botões
+function setupButtonInteractions() {
+    document.querySelectorAll('.cta-btn').forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px) scale(1.02)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        button.addEventListener('mousedown', function() {
+            this.style.transform = 'translateY(-1px) scale(0.98)';
+        });
+        
+        button.addEventListener('mouseup', function() {
+            this.style.transform = 'translateY(-3px) scale(1.02)';
+        });
+    });
+}
+
+// Função para mostrar notificações de conversão social
+function showSocialProof() {
+    const notifications = [
+        'João de São Paulo acabou de solicitar orçamento! 📱',
+        'Maria de Guarulhos consertou seu notebook! 💻',
+        'Carlos de Osasco aproveitou a oferta! ⚡',
+        'Ana de São Paulo recuperou seus dados! 📂',
+        'Pedro de Taboão consertou a tela! 📱'
+    ];
+    
+    let notificationIndex = 0;
+    
+    function createNotification() {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: all 0.5s ease;
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+            max-width: 300px;
+        `;
+        
+        notification.textContent = notifications[notificationIndex];
+        document.body.appendChild(notification);
+        
+        // Anima entrada
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove após 4 segundos
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
+        }, 4000);
+        
+        notificationIndex = (notificationIndex + 1) % notifications.length;
+    }
+    
+    // Primeira notificação após 5 segundos
+    setTimeout(createNotification, 5000);
+    
+    // Notificações subsequentes a cada 15-25 segundos
+    setInterval(() => {
+        if (Math.random() > 0.3) { // 70% de chance
+            createNotification();
+        }
+    }, 20000);
+}
+
+// Função para tracking de tempo na página
+function trackTimeOnPage() {
+    const startTime = Date.now();
+    
+    window.addEventListener('beforeunload', () => {
+        const timeSpent = Math.round((Date.now() - startTime) / 1000);
+        
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'time_on_page', {
+                'event_category': 'engagement',
+                'value': timeSpent
+            });
+        }
+    });
+}
+
+// Função para detectar intenção de saída e mostrar oferta final
+function setupExitIntent() {
+    let hasShownExitOffer = false;
+    
+    document.addEventListener('mouseleave', (e) => {
+        if (e.clientY <= 0 && !hasShownExitOffer) {
+            hasShownExitOffer = true;
+            showExitOffer();
+        }
+    });
+}
+
+function showExitOffer() {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            animation: slideIn 0.5s ease;
+        ">
+            <h2 style="color: #FF4757; font-size: 28px; margin-bottom: 20px;">
+                ⚠️ ESPERA! NÃO PERCA ESSA CHANCE!
+            </h2>
+            <p style="font-size: 18px; margin-bottom: 25px; color: #333;">
+                Antes de sair, que tal aproveitar nosso <strong>DIAGNÓSTICO GRATUITO</strong>?<br>
+                <span style="color: #FF4757;">Válido apenas para os próximos visitantes!</span>
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button onclick="openWhatsApp(); this.parentElement.parentElement.parentElement.remove();" 
+                        style="
+                            background: linear-gradient(135deg, #25D366, #20c757);
+                            color: white;
+                            border: none;
+                            padding: 15px 25px;
+                            border-radius: 50px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            font-size: 16px;
+                        ">
+                    SIM, QUERO APROVEITAR! 📱
+                </button>
+                <button onclick="this.parentElement.parentElement.parentElement.remove();"
+                        style="
+                            background: #ccc;
+                            color: #666;
+                            border: none;
+                            padding: 15px 25px;
+                            border-radius: 50px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            font-size: 16px;
+                        ">
+                    Não, obrigado
+                </button>
             </div>
         </div>
-    </section>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Remove modal se clicar fora
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
 
-    <!-- Urgency Section -->
-    <section class="urgency-section">
-        <div class="container">
-            <div class="urgency-content">
-                <div class="urgency-text">
-                    <h2>⚡ ATENÇÃO: Oferta Válida Apenas HOJE!</h2>
-                    <p>Diagnóstico que custa R$ 50,00 está <strong>GRÁTIS</strong> para os primeiros 10 clientes</p>
-                    <div class="countdown-container">
-                        <div class="countdown" id="countdown">
-                            <div class="time-unit">
-                                <span id="hours">23</span>
-                                <label>Horas</label>
-                            </div>
-                            <div class="time-unit">
-                                <span id="minutes">59</span>
-                                <label>Minutos</label>
-                            </div>
-                            <div class="time-unit">
-                                <span id="seconds">59</span>
-                                <label>Segundos</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="urgency-cta">
-                    <a href="#" class="cta-btn urgent" onclick="openWhatsApp()">
-                        APROVEITAR OFERTA AGORA
-                    </a>
-                    <div class="spots-left">
-                        <i class="fas fa-users"></i>
-                        <span id="spots">7 vagas restantes</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+// CSS adicional para animações do modal
+const modalStyles = document.createElement('style');
+modalStyles.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+`;
+document.head.appendChild(modalStyles);
 
-    <!-- Testimonials -->
-    <section class="testimonials-section">
-        <div class="container">
-            <h2>O Que Nossos <span class="highlight">Clientes Dizem</span></h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="stars">★★★★★</div>
-                    <p>"Incrível! Meu iPhone caiu na piscina e eles conseguiram recuperar TUDO. Em 1 hora estava funcionando perfeitamente!"</p>
-                    <div class="testimonial-author">
-                        <strong>Marina Silva</strong>
-                        <span>São Paulo - SP</span>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="stars">★★★★★</div>
-                    <p>"Notebook estava super lento, em 30 minutos fizeram uma limpeza e upgrade. Parece novo! Recomendo demais."</p>
-                    <div class="testimonial-author">
-                        <strong>Carlos Mendes</strong>
-                        <span>Guarulhos - SP</span>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="stars">★★★★★</div>
-                    <p>"Preço justo, atendimento rápido e garantia real. Já indiquei para toda família. Profissionais de verdade!"</p>
-                    <div class="testimonial-author">
-                        <strong>Ana Costa</strong>
-                        <span>Osasco - SP</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+// Função para carregar estado inicial das vagas
+function loadInitialSpots() {
+    try {
+        const savedSpots = localStorage.getItem('rng_spots_left');
+        if (savedSpots) {
+            spotsLeft = parseInt(savedSpots);
+            const spotsElement = document.getElementById('spots');
+            if (spotsElement) {
+                spotsElement.textContent = `${spotsLeft} vagas restantes`;
+            }
+        }
+    } catch (e) {
+        // Se não conseguir carregar, mantém o valor padrão
+        console.log('Não foi possível carregar o estado das vagas');
+    }
+}
 
-    <!-- CTA Final -->
-    <section class="final-cta-section">
-        <div class="container">
-            <div class="final-cta-content">
-                <h2>Não Espere Seu Problema Piorar!</h2>
-                <p>Cada minuto que passa, seu aparelho pode ter danos irreversíveis. <strong>Aja AGORA!</strong></p>
-                
-                <div class="cta-buttons">
-                    <a href="#" class="cta-btn mega" onclick="openWhatsApp()">
-                        <i class="fab fa-whatsapp"></i>
-                        WHATSAPP: (11) 96596-3534
-                    </a>
-                    <a href="tel:+5511965963534" class="cta-btn secondary">
-                        <i class="fas fa-phone"></i>
-                        LIGAR AGORA
-                    </a>
-                </div>
+// Função para adicionar efeitos visuais ao scroll
+function addScrollEffects() {
+    const whatsappBtn = document.querySelector('.whatsapp-float');
+    let isScrolling = false;
+    
+    window.addEventListener('scroll', () => {
+        if (!isScrolling) {
+            isScrolling = true;
+            
+            // Adiciona efeito de "pular" no botão do WhatsApp durante scroll
+            if (whatsappBtn) {
+                whatsappBtn.style.animation = 'none';
+                setTimeout(() => {
+                    whatsappBtn.style.animation = 'bounce 1s ease-in-out';
+                }, 100);
+            }
+            
+            setTimeout(() => {
+                isScrolling = false;
+            }, 150);
+        }
+    });
+}
 
-                <div class="guarantee-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    <div>
-                        <strong>GARANTIA TOTAL</strong>
-                        <span>90 dias ou seu dinheiro de volta</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+// Inicialização quando a página carrega
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 RNG Landing Page carregada com sucesso!');
+    
+    // Inicializa o botão flutuante do WhatsApp
+    const whatsappBtn = document.getElementById('whatsapp-btn');
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', () => openWhatsApp());
+    }
+    
+    // Inicializa a logo flutuante
+    const logoButton = document.querySelector('.logo-bubble');
+    if (logoButton) {
+        logoButton.addEventListener('click', () => {
+            openWhatsApp('logo-click');
+        });
+    }
+    
+    // Inicializa todas as funcionalidades
+    loadInitialSpots();
+    startCountdown();
+    setupScrollAnimations();
+    setupSmoothScroll();
+    setupParallax();
+    setupButtonInteractions();
+    addScrollEffects();
+    trackTimeOnPage();
+    
+    // Funcionalidades com delay para melhor UX
+    setTimeout(() => {
+        showSocialProof();
+        setupExitIntent();
+    }, 3000);
+    
+    // Log para debug
+    console.log('✅ Todas as funcionalidades inicializadas');
+});
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <div class="logo">
-                        <div class="logo-icon">RNG</div>
-                        <span>Assistência Técnica Especializada</span>
-                    </div>
-                    <p>Especialistas em dar vida nova aos seus aparelhos eletrônicos com garantia e qualidade.</p>
-                </div>
-                <div class="footer-contact">
-                    <h4>Contato</h4>
-                    <div class="contact-item">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>(11) 96596-3534</span>
-                    </div>
-                    <div class="social-links">
-                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 RNG Assistência Técnica. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+// Previne erros em navegadores antigos
+window.addEventListener('error', function(e) {
+    console.log('Erro capturado:', e.message);
+    // Não mostra erros para o usuário, apenas loga
+});
 
-    <script src="script.js"></script>
-</body>
-</html>
+// Função auxiliar para debugging (pode ser removida em produção)
+function debugInfo() {
+    console.log('Debug Info:', {
+        spotsLeft: spotsLeft,
+        countdownActive: countdownActive,
+        userAgent: navigator.userAgent,
+        viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
+    });
+}
+
+// Expõe algumas funções globalmente para uso em onclick dos elementos HTML
+window.openWhatsApp = openWhatsApp;
+window.debugInfo = debugInfo;
