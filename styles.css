@@ -328,6 +328,347 @@ body {
     animation: glow 3s ease-in-out infinite;
 }
 
+/* Logo Flutuante */
+.floating-logo {
+    position: absolute;
+    top: 15%;
+    right: -25%;
+    z-index: 20;
+    animation: logoFloat 6s ease-in-out infinite;
+    animation-delay: 1.5s;
+}
+
+.logo-bubble {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.15),
+        0 8px 25px rgba(255, 215, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    max-width: 180px;
+    transform: scale(0.85);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.logo-bubble:hover {
+    transform: scale(0.95);
+    box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.2),
+        0 12px 35px rgba(255, 215, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.logo-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 35px;
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 18px solid rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+}
+
+.logo-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 40px;
+    width: 0;
+    height: 0;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-top: 13px solid rgba(248, 250, 252, 0.9);
+}
+
+.floating-logo-img {
+    width: 120px;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Logo RNG Recreada */
+.rng-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 80px;
+    height: 90px;
+}
+
+/* Coroa Superior Amarela */
+.crown-top {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    width: 70px;
+    height: 25px;
+    margin-bottom: -5px;
+}
+
+.crown-piece {
+    background: linear-gradient(135deg, #D4D900, #B8BD00);
+    border: 2px solid #333;
+    position: relative;
+}
+
+.crown-piece.left {
+    width: 20px;
+    height: 20px;
+    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    transform: skew(-15deg);
+}
+
+.crown-piece.center {
+    width: 25px;
+    height: 25px;
+    clip-path: polygon(20% 100%, 50% 0%, 80% 100%);
+    margin: 0 -2px;
+}
+
+.crown-piece.right {
+    width: 20px;
+    height: 20px;
+    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    transform: skew(15deg);
+}
+
+/* Apple Icon */
+.apple-icon {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    margin: 5px 0;
+    z-index: 10;
+}
+
+.apple-body {
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+    border: 1px solid #ddd;
+}
+
+.apple-body::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: 3px;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+}
+
+.apple-leaf {
+    position: absolute;
+    top: -3px;
+    right: 6px;
+    width: 8px;
+    height: 4px;
+    background: #4CAF50;
+    border-radius: 50%;
+    transform: rotate(-20deg);
+}
+
+/* Texto RNG */
+.rng-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: #333;
+    margin: 2px 0;
+    letter-spacing: 1px;
+}
+
+.rng-subtext {
+    font-family: 'Inter', sans-serif;
+    font-size: 7px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 5px;
+    line-height: 1.1;
+}
+
+/* Coroa Inferior Azul */
+.crown-bottom {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    width: 70px;
+    height: 20px;
+    margin-top: -3px;
+}
+
+.crown-piece-bottom {
+    background: linear-gradient(135deg, #2147CB, #1B3AA0);
+    border: 2px solid #333;
+    position: relative;
+}
+
+.crown-piece-bottom.left {
+    width: 30px;
+    height: 18px;
+    clip-path: polygon(0% 0%, 70% 0%, 100% 100%, 30% 100%);
+    margin-right: 5px;
+}
+
+.crown-piece-bottom.right {
+    width: 30px;
+    height: 18px;
+    clip-path: polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%);
+    margin-left: 5px;
+}
+
+.logo-bubble-text {
+    text-align: center;
+    color: #2C3E50;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.logo-bubble-subtext {
+    color: #667eea;
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+/* Animações */
+@keyframes logoFloat {
+    0%, 100% { 
+        transform: translateY(0px) translateX(0px) rotate(0deg);
+    }
+    25% { 
+        transform: translateY(-15px) translateX(5px) rotate(1deg);
+    }
+    50% { 
+        transform: translateY(-8px) translateX(-3px) rotate(-0.5deg);
+    }
+    75% { 
+        transform: translateY(-20px) translateX(8px) rotate(0.8deg);
+    }
+}
+
+/* Responsividade para Logo Flutuante */
+@media (max-width: 991px) {
+    .floating-logo {
+        top: 20%;
+        right: -15%;
+        transform: scale(0.8);
+    }
+    
+    .rng-logo {
+        width: 70px;
+        height: 80px;
+    }
+    
+    .rng-text {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 767px) {
+    .floating-logo {
+        position: static;
+        transform: none;
+        margin: 20px auto;
+        animation: logoFloat 4s ease-in-out infinite;
+    }
+    
+    .logo-bubble {
+        transform: scale(0.7);
+        margin: 0 auto;
+    }
+    
+    .logo-bubble:hover {
+        transform: scale(0.8);
+    }
+    
+    .rng-logo {
+        width: 60px;
+        height: 70px;
+    }
+    
+    .rng-text {
+        font-size: 14px;
+    }
+    
+    .rng-subtext {
+        font-size: 6px;
+    }
+}
+
+@media (max-width: 479px) {
+    .floating-logo {
+        margin: 15px auto;
+    }
+    
+    .logo-bubble {
+        transform: scale(0.6);
+        padding: 20px;
+    }
+    
+    .rng-logo {
+        width: 50px;
+        height: 60px;
+    }
+    
+    .rng-text {
+        font-size: 12px;
+    }
+    
+    .rng-subtext {
+        font-size: 5px;
+    }
+    
+    .logo-bubble-text {
+        font-size: 11px;
+    }
+    
+    .logo-bubble-subtext {
+        font-size: 9px;
+    }
+    
+    .crown-top {
+        width: 50px;
+        height: 20px;
+    }
+    
+    .crown-bottom {
+        width: 50px;
+        height: 15px;
+    }
+    
+    .apple-icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .apple-body {
+        width: 12px;
+        height: 12px;
+    }
+}
+
 @keyframes phoneFloat {
     0%, 100% { transform: perspective(1000px) rotateY(-15deg) translateY(0px); }
     50% { transform: perspective(1000px) rotateY(-15deg) translateY(-20px); }
