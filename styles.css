@@ -330,12 +330,8 @@ body {
 
 /* Logo Flutuante */
 .floating-logo {
-    position: absolute;
-    top: 15%;
-    right: 10%;
-    z-index: 20;
-    animation: logoFloat 6s ease-in-out infinite;
-    animation-delay: 1.5s;
+    top: -10%;
+    right: 20%;
 }
 
 .logo-bubble {
